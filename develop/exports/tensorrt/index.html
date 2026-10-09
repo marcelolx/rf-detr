@@ -1,0 +1,3623 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Export RF-DETR models to a TensorRT engine from PyTorch for low-latency inference on NVIDIA GPUs.">
+      
+      
+        <meta name="author" content="Roboflow">
+      
+      
+        <link rel="canonical" href="https://rfdetr.roboflow.com/develop/exports/tensorrt/">
+      
+      
+        <link rel="prev" href="../onnx/">
+      
+      
+        <link rel="next" href="../tflite/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/roboflow-logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+  
+    
+      
+        <title>TensorRT - RF-DETR</title>
+      
+    
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CIBM+Plex+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"IBM Plex Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/rf.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+  
+  <meta name="robots" content="noindex, follow">
+  
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5M220DKLMB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){window.dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-5M220DKLMB');
+  </script>
+  <link rel="preconnect" href="https://storage.googleapis.com">
+
+  
+  
+  
+  <meta property="og:title" content="TensorRT - RF-DETR">
+  <meta property="og:description" content="Export RF-DETR models to a TensorRT engine from PyTorch for low-latency inference on NVIDIA GPUs.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://rfdetr.roboflow.com/develop/exports/tensorrt/">
+  <meta property="og:image" content="https://storage.googleapis.com/com-roboflow-marketing/rf-detr/rf_detr_1-4_latency_accuracy_object_detection.png">
+  <meta property="og:image:width" content="840">
+  <meta property="og:image:height" content="630">
+
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@roboflow">
+  <meta name="twitter:title" content="TensorRT - RF-DETR">
+  <meta name="twitter:description" content="Export RF-DETR models to a TensorRT engine from PyTorch for low-latency inference on NVIDIA GPUs.">
+  <meta name="twitter:image" content="https://storage.googleapis.com/com-roboflow-marketing/rf-detr/rf_detr_1-4_latency_accuracy_object_detection.png">
+
+  
+  
+  
+  
+  <meta property="article:modified_time" content="2026-10-08T17:02:29">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "TensorRT",
+    "description": "Export RF-DETR models to a TensorRT engine from PyTorch for low-latency inference on NVIDIA GPUs.",
+    "url": "https://rfdetr.roboflow.com/develop/exports/tensorrt/",
+    "isPartOf": {"@id": "https://rfdetr.roboflow.com/develop#website"},
+    "about": {"@id": "https://rfdetr.roboflow.com/develop#software"},
+    "proficiencyLevel": "Beginner to advanced",
+    "inLanguage": "en",
+    "keywords": "RF-DETR, rfdetr, object detection, instance segmentation, computer vision, Roboflow",
+    "datePublished": "2025-03-01",
+    "dateModified": "2026-10-08T17:02:29",
+    "image": "https://storage.googleapis.com/com-roboflow-marketing/rf-detr/rf_detr_1-4_latency_accuracy_object_detection.png",
+    "author": {"@type": "Organization", "name": "Roboflow", "url": "https://roboflow.com"},
+    "publisher": {"@type": "Organization", "name": "Roboflow", "url": "https://roboflow.com"},
+    "mainEntityOfPage": {"@type": "WebPage", "@id": "https://rfdetr.roboflow.com/develop/exports/tensorrt/"},
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": [".md-content h1", ".md-typeset > p:first-child"]
+    }
+  }
+  </script>
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "RF-DETR",
+        "item": "https://rfdetr.roboflow.com/develop"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Export Formats",
+        "item": "https://rfdetr.roboflow.com/develop/exports/onnx/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "TensorRT",
+        "item": "https://rfdetr.roboflow.com/develop/exports/tensorrt/"
+      }
+      
+    ]
+  }
+  </script>
+  
+  
+
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tensorrt-export" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              You are reading the unreleased development version of the documentation, built from the <code>develop</code> branch.<br>
+APIs described here may change or may never ship in a release, so use the <a href="https://rfdetr.roboflow.com/latest/"><strong>latest stable release</strong></a> instead.
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+
+<!-- Header -->
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav
+    class="md-header__inner md-grid"
+    aria-label="Header"
+  >
+
+    <!-- Link to home -->
+    <a
+      href="../.."
+      title="RF-DETR"
+      class="md-header__button md-logo"
+      aria-label="RF-DETR"
+      data-md-component="logo"
+    >
+      
+  <img src="../../assets/roboflow-logo.svg" alt="RF-DETR" width="24" height="24">
+
+    </a>
+
+    <!-- Button to open drawer -->
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+
+    <!-- Header title -->
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RF-DETR Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis" style="display: flex; align-items: center; gap: 0.5rem;">
+            <a
+            href="../.."
+            title="RF-DETR"
+            class="md-header__button md-logo"
+            aria-label="RF-DETR"
+            data-md-component="logo"
+            id="item-logo"
+            >
+            
+  <img src="../../assets/roboflow-logo.svg" alt="RF-DETR" width="24" height="24">
+
+            </a>
+            
+              TensorRT
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    <!-- Button to open search modal -->
+    
+      
+
+      <!-- Check if search is actually enabled - see https://t.ly/DT_0V -->
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+
+        <!-- Search interface -->
+        <div class="md-search" data-md-component="search" role="dialog" aria-modal="true" aria-label="Search">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+
+
+    <ul class="header-list">
+        <li style="align-items: center;" id="resources-list">
+            <label for="dropdown-resources"><span>Resources <span class="header-chevron" aria-hidden="true"></span></span></label>
+            <input type="radio" name="dropdown" id="dropdown-resources" style="display: none;" />
+            <ul class="resources-sublist sublist">
+                <li><a href="https://blog.roboflow.com">Blog</a></li>
+                <li><a href="https://discuss.roboflow.com">Community Forum</a></li>
+                <li><a href="https://roboflow.com/sales">Contact Sales</a></li>
+                <li><a href="https://universe.roboflow.com">Universe</a></li>
+            </ul>
+        </li>
+        <li style="align-items: center;" id="products-list">
+            <label for="dropdown-products"><span>Docs <span class="header-chevron" aria-hidden="true"></span></span></label>
+            <input type="radio" name="dropdown" id="dropdown-products" style="display: none;" />
+            <ul class="products-sublist sublist">
+                <li><a href="https://inference.roboflow.com">Inference</a></li>
+                <li><a href="https://supervision.roboflow.com">Supervision</a></li>
+                <li><a href="https://trackers.roboflow.com">Trackers</a></li>
+                <li><a href="https://rfdetr.roboflow.com">RF-DETR</a></li>
+                <li><a href="https://maestro.roboflow.com">Maestro</a></li>
+                <li><a href="https://docs.roboflow.com">Roboflow</a></li>
+            </ul>
+        </li>
+        <li>
+          <a href="https://github.com/roboflow/rf-detr" class="header-btn" style="border-radius: 5px; color: white; background: var(--md-typeset-a-color); padding-top: 0.25rem; padding-left: 0.5rem; padding-bottom: 0.25rem; padding-right: 0.5rem; border: 1px solid #8315F9;">Go to GitHub</a>
+        </li>
+    </ul>
+    <script>
+      document.addEventListener('click', function(event) {
+        const resourcesList = document.getElementById('resources-list');
+        const productsList = document.getElementById('products-list');
+        const dropdownResources = document.getElementById('dropdown-resources');
+        const dropdownProducts = document.getElementById('dropdown-products');
+
+        if (!resourcesList.contains(event.target)) {
+          dropdownResources.checked = false;
+        }
+        if (!productsList.contains(event.target)) {
+          dropdownProducts.checked = false;
+        }
+      });
+      document.getElementById('resources-list').addEventListener('mouseover', function() {
+        document.getElementById('dropdown-resources').checked = true;
+      });
+      document.getElementById('products-list').addEventListener('mouseover', function() {
+        document.getElementById('dropdown-products').checked = true;
+      });
+      document.getElementById('resources-list').addEventListener('mouseout', function() {
+        setTimeout(function() {
+          if (!document.querySelector('.resources-sublist:hover') && !document.querySelector('#resources-list:hover')) {
+            document.getElementById('dropdown-resources').checked = false;
+          }
+        }, 350);
+      });
+      document.querySelector('.resources-sublist').addEventListener('mouseout', function() {
+        setTimeout(function() {
+          if (!document.querySelector('.resources-sublist:hover') && !document.querySelector('#resources-list:hover')) {
+            document.getElementById('dropdown-resources').checked = false;
+          }
+        }, 450);
+      });
+      document.getElementById('products-list').addEventListener('mouseout', function() {
+        setTimeout(function() {
+          if (!document.querySelector('.products-sublist:hover') && !document.querySelector('#products-list:hover')) {
+            document.getElementById('dropdown-products').checked = false;
+          }
+        }, 500);
+      });
+      document.querySelector('.products-sublist').addEventListener('mouseout', function() {
+        setTimeout(function() {
+          if (!document.querySelector('.products-sublist:hover') && !document.querySelector('#products-list:hover')) {
+            document.getElementById('dropdown-products').checked = false;
+          }
+        }, 500);
+      });
+      function labelCurrentVersion() {
+        document.querySelectorAll('.md-version__current').forEach(function(button) {
+          const label = button.textContent.trim();
+          if (label) {
+            button.setAttribute('aria-label', label);
+          }
+        });
+      }
+      labelCurrentVersion();
+      const versionMenu = document.querySelector('.md-version');
+      if (versionMenu) {
+        new MutationObserver(labelCurrentVersion).observe(versionMenu, { childList: true, subtree: true });
+      }
+    </script>
+  </nav>
+
+  <!-- Navigation tabs (sticky) -->
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../learn/how-it-works/" class="md-tabs__link">
+          
+  
+  
+  How to
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Export
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/rfdetr/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../faq/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../cookbooks/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Cookbooks
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RF-DETR" class="md-nav__button md-logo" aria-label="RF-DETR" data-md-component="logo">
+      
+  <img src="../../assets/roboflow-logo.svg" alt="RF-DETR" width="24" height="24">
+
+    </a>
+    RF-DETR
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/roboflow/rf-detr" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    roboflow/rf-detr
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    How to
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/how-it-works/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How It Works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Run Model
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Run Model
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/run/detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/run/segmentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Segmentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/run/keypoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keypoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/pretrained/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pretrained Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Train Model
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Train Model
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/train/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/train/dataset-formats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dataset Formats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/train/training-parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/train/advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/train/customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Training API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/train/augmentations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Augmentations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/train/loggers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training Loggers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/deploy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmarks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Export
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export Formats
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Export Formats
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../onnx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ONNX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TensorRT
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TensorRT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#export-directly-to-tensorrt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export Directly to TensorRT
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#int8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INT8
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#engine-description-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engine Description File
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#portable-engines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portable Engines
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reuse-the-timing-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reuse the Timing Cache
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-api-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python API Conversion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tflite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TFLite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../litert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LiteRT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openvino/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenVINO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../executorch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ExecuTorch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coreml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CoreML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coreai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../blueprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exporter Blueprint
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/rfdetr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Detection Models
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Detection Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/nano/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR Nano
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/small/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR Small
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/medium/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR Medium
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/large/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR Large
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/xlarge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR XLarge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/2xlarge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR 2XLarge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Segmentation Models
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Segmentation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/seg_nano/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR Seg Nano
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/seg_small/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR Seg Small
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/seg_medium/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR Seg Medium
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/seg_large/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR Seg Large
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/seg_xlarge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR Seg XLarge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/seg_2xlarge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR Seg 2XLarge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keypoint Models
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Keypoint Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kp_preview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RF-DETR Keypoint Preview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training Configs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Training Configs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/train_config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Train Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/segmentation_train_config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Segmentation Train Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/keypoint_train_config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keypoint Train Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lightning Training
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Lightning Training
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cookbooks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cookbooks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#export-directly-to-tensorrt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export Directly to TensorRT
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#int8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INT8
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#engine-description-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engine Description File
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#portable-engines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portable Engines
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reuse-the-timing-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reuse the Timing Cache
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-api-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python API Conversion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="tensorrt-export">TensorRT Export<a class="headerlink" href="#tensorrt-export" title="Permanent link">&para;</a></h1>
+<p>If you want lower latency on NVIDIA GPUs, you can convert the exported ONNX model to a TensorRT engine.</p>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>Run TensorRT conversion on the same machine and GPU family where you plan to deploy inference, or build a <a href="#portable-engines">portable engine</a>.</p>
+</blockquote>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Install the TensorRT extra: <code>pip install rfdetr[tensorrt]</code> (provides <code>tensorrt</code>, <code>polygraphy</code>, <code>onnx</code>, <code>onnxconverter-common</code> and <code>onnxruntime-gpu</code>; <code>onnx</code> and <code>onnxconverter-common</code> cast the ONNX graph to FP16 on TensorRT 11+, and onnxruntime calibrates <a href="#int8">INT8</a> engines; no <code>trtexec</code> binary needed)</li>
+<li>A CUDA GPU (by default the engine is built for the local GPU architecture)</li>
+<li>Export an ONNX model first (for example: <code>output/inference_model.onnx</code>)</li>
+</ul>
+<h2 id="export-directly-to-tensorrt">Export Directly to TensorRT<a class="headerlink" href="#export-directly-to-tensorrt" title="Permanent link">&para;</a></h2>
+<p>Pass <code>format="tensorrt"</code> to <code>export()</code> to export ONNX and convert to a TensorRT engine in one step:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rfdetr</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFDETRMedium</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">RFDETRMedium</span><span class="p">(</span><span class="n">pretrain_weights</span><span class="o">=</span><span class="s2">"&lt;path/to/checkpoint.pth&gt;"</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">model</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"tensorrt"</span><span class="p">)</span>
+</span></code></pre></div>
+<p>This exports <code>output/inference_model.onnx</code> first and then produces <code>output/inference_model_fp16.trt</code> (the <code>_fp16</code>/<code>_fp32</code>/<code>_int8</code> suffix always reflects the precision actually built — see <code>fp16</code> in <a href="../advanced/#export-parameters">Export Parameters</a> — unless <code>output_name</code> is set).</p>
+<div class="admonition note">
+<p class="admonition-title">Dynamic batch</p>
+<p>Pass <code>dynamic_batch=True</code> together with <code>max_batch_size</code> to build one engine that accepts any batch from 1 to <code>max_batch_size</code>. The engine gets a single TensorRT optimization profile with <code>min=1</code>, <code>opt=batch_size</code> and <code>max=max_batch_size</code>, so <code>batch_size</code> should be the batch you serve most often; other sizes inside the range run, TensorRT just tunes its kernels for <code>opt</code>. Without <code>dynamic_batch</code> the engine accepts only the batch size baked into the intermediate ONNX graph.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">model</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"tensorrt"</span><span class="p">,</span> <span class="n">dynamic_batch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Why a single profile with <code>min=1</code>, not several.</strong> The engine always builds with one TensorRT optimization profile spanning the full <code>1 .. max_batch_size</code> range, rather than several narrower profiles picked at runtime with <code>set_optimization_profile_async</code>. This is a deliberate trade-off, not a limitation: it keeps the export API and the runtime simple (one engine, one profile, no profile-selection logic in the caller), and the measured cost at the tuned <code>opt</code> batch is small (see the <a href="https://github.com/roboflow/rf-detr/blob/main/CHANGELOG.md">changelog</a> for per-GPU numbers). A deployment that never serves batches below some floor — for example a DeepStream or Triton pipeline always fed a fixed batch of frames (see <a href="https://github.com/roboflow/rf-detr/issues/376">#376</a>) — pays for optimizing kernels down to batch 1 even though it never uses them, foreclosing per-batch-band multi-profile support (<code>set_optimization_profile_async</code> plus several <code>Profile()</code> entries), which is TensorRT's own standard mitigation for the away-from-opt penalty. A <code>min_batch_size</code> (paired with <code>max_batch_size</code>) or a list of <code>opt_batch_sizes</code> each with its own profile may become configurable in a future release if a narrow-band deployment need arises; today, export one profile spanning the batches you plan to serve.</p>
+</div>
+<h2 id="int8">INT8<a class="headerlink" href="#int8" title="Permanent link">&para;</a></h2>
+<p>Pass <code>quantization="int8"</code> and a directory of representative images to build an engine that runs most of the backbone encoder and decoder in INT8 and the rest in FP16:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rfdetr</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFDETRSmall</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">RFDETRSmall</span><span class="p">(</span><span class="n">pretrain_weights</span><span class="o">=</span><span class="s2">"&lt;path/to/checkpoint.pth&gt;"</span><span class="p">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">model</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"tensorrt"</span><span class="p">,</span> <span class="n">quantization</span><span class="o">=</span><span class="s2">"int8"</span><span class="p">,</span> <span class="n">calibration_data</span><span class="o">=</span><span class="s2">"path/to/images"</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+</span></code></pre></div>
+<p>This writes <code>output/rfdetr-small_int8.trt</code> (next to the intermediate <code>output/rfdetr-small.onnx</code>). The export runs the first <code>max_images</code> (default <code>100</code>) calibration images by file name through the FP32 graph with onnxruntime on the CPU, preprocessed exactly as <code>predict()</code> does, and records each quantized tensor's largest absolute value. Those ranges decide the engine's accuracy, so use images from the deployment domain: out-of-domain images give an engine that loads, runs and is quietly less accurate. <code>calibration_data</code> also accepts a <code>.npy</code> path or an array shaped <code>(N, C, H, W)</code>, already normalized the way <code>predict()</code> normalizes; an integer array, raw pixels, is refused. <code>max_images</code> caps only a directory of images; an array or <code>.npy</code> file is used whole, so pass as many samples as you want calibrated. Calibration runs the graph at the export's <code>batch_size</code>, so its host memory grows with the batch: about 9.5 GB for Nano at batch 32.</p>
+<p>Measured with TensorRT 11.3 on an RTX 5070 (sm_120) under WSL2 and a Tesla T4 (sm_75) on Colab, calibrated on 128 COCO <code>train2017</code> images (<code>max_images=128</code>) and scored on all 5000 <code>val2017</code> images. Latency is GPU time per image (CUDA events, median of 15 rounds of 200 executions, FP16 and INT8 interleaved) from back-to-back <code>execute_async_v3</code> calls with no synchronization in between (the plain call) and from a captured CUDA graph. Each speedup in parentheses divides the FP16 latency by the INT8 latency measured the same way, so the two columns have different FP16 bases: a plain call adds CPU launch time that a graph replay removes. That gap is large only where the engine is launch-bound, at batch 1 on the RTX 5070 (1.675 ms plain against 0.922 ms graph for Nano), and small on the T4 and at larger batches. The speedups and the AP differences in parentheses are computed from the unrounded values, so recomputing them from the rounded cells can differ in the last digit. The RTX 5070 ran under WSL2 and was not measured on native Linux, so how much of that launch time WSL2 adds is not known. On the RTX 5070, Nano across batch sizes:</p>
+<table>
+<thead>
+<tr>
+<th>Batch</th>
+<th>Precision</th>
+<th>AP</th>
+<th>AP50</th>
+<th>Latency, plain call</th>
+<th>Latency, CUDA graph</th>
+<th>Engine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>FP16</td>
+<td>48.03</td>
+<td>67.10</td>
+<td>1.675 ms</td>
+<td>0.922 ms</td>
+<td>62 MB</td>
+</tr>
+<tr>
+<td>1</td>
+<td>INT8</td>
+<td>47.40</td>
+<td>66.23</td>
+<td>1.582 ms (1.06×)</td>
+<td>0.693 ms (1.33×)</td>
+<td>41 MB</td>
+</tr>
+<tr>
+<td>8</td>
+<td>FP16</td>
+<td>48.02</td>
+<td>67.11</td>
+<td>0.554 ms</td>
+<td>0.497 ms</td>
+<td>73 MB</td>
+</tr>
+<tr>
+<td>8</td>
+<td>INT8</td>
+<td>47.29</td>
+<td>66.19</td>
+<td>0.426 ms (1.30×)</td>
+<td>0.363 ms (1.37×)</td>
+<td>51 MB</td>
+</tr>
+<tr>
+<td>32</td>
+<td>FP16</td>
+<td>48.03</td>
+<td>67.12</td>
+<td>0.494 ms</td>
+<td>0.482 ms</td>
+<td>68–108 MB</td>
+</tr>
+<tr>
+<td>32</td>
+<td>INT8</td>
+<td>47.30</td>
+<td>66.18</td>
+<td>0.350 ms (1.41×)</td>
+<td>0.338 ms (1.43×)</td>
+<td>49–87 MB</td>
+</tr>
+</tbody>
+</table>
+<p>Every model at batch 1, measured the same way:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>AP, FP16</th>
+<th>AP, INT8</th>
+<th>Plain call, FP16</th>
+<th>Plain call, INT8</th>
+<th>CUDA graph, FP16</th>
+<th>CUDA graph, INT8</th>
+<th>Engine, FP16</th>
+<th>Engine, INT8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nano</td>
+<td>48.03</td>
+<td>47.40 (−0.63)</td>
+<td>1.675 ms</td>
+<td>1.582 ms (1.06×)</td>
+<td>0.922 ms</td>
+<td>0.693 ms (1.33×)</td>
+<td>62 MB</td>
+<td>41 MB</td>
+</tr>
+<tr>
+<td>Small</td>
+<td>52.79</td>
+<td>52.18 (−0.61)</td>
+<td>2.221 ms</td>
+<td>1.998 ms (1.11×)</td>
+<td>1.432 ms</td>
+<td>1.157 ms (1.24×)</td>
+<td>67 MB</td>
+<td>45 MB</td>
+</tr>
+<tr>
+<td>Medium</td>
+<td>54.69</td>
+<td>53.84 (−0.85)</td>
+<td>2.536 ms</td>
+<td>2.412 ms (1.05×)</td>
+<td>1.625 ms</td>
+<td>1.370 ms (1.19×)</td>
+<td>71 MB</td>
+<td>48 MB</td>
+</tr>
+<tr>
+<td>Large</td>
+<td>56.52</td>
+<td>56.02 (−0.50)</td>
+<td>2.806 ms</td>
+<td>2.682 ms (1.05×)</td>
+<td>2.000 ms</td>
+<td>1.820 ms (1.10×)</td>
+<td>68 MB</td>
+<td>51 MB</td>
+</tr>
+</tbody>
+</table>
+<p>The same on a Tesla T4, from a Colab run of the same external harness (INT8 loses 0.55 to 0.85 AP, 1.0% to 1.6% of the FP16 AP, and is faster everywhere):</p>
+<table>
+<thead>
+<tr>
+<th>Model, batch</th>
+<th>AP, FP16</th>
+<th>AP, INT8</th>
+<th>Plain call, FP16</th>
+<th>Plain call, INT8</th>
+<th>CUDA graph, FP16</th>
+<th>CUDA graph, INT8</th>
+<th>Engine, FP16</th>
+<th>Engine, INT8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nano, 1</td>
+<td>48.07</td>
+<td>47.31 (−0.77)</td>
+<td>3.26 ms</td>
+<td>2.68 ms (1.22×)</td>
+<td>3.21 ms</td>
+<td>2.65 ms (1.21×)</td>
+<td>60 MB</td>
+<td>48 MB</td>
+</tr>
+<tr>
+<td>Small, 1</td>
+<td>52.83</td>
+<td>52.23 (−0.60)</td>
+<td>5.25 ms</td>
+<td>4.68 ms (1.12×)</td>
+<td>5.31 ms</td>
+<td>4.60 ms (1.16×)</td>
+<td>64 MB</td>
+<td>59 MB</td>
+</tr>
+<tr>
+<td>Medium, 1</td>
+<td>54.66</td>
+<td>53.80 (−0.85)</td>
+<td>6.69 ms</td>
+<td>5.89 ms (1.14×)</td>
+<td>6.71 ms</td>
+<td>5.76 ms (1.16×)</td>
+<td>69 MB</td>
+<td>67 MB</td>
+</tr>
+<tr>
+<td>Large, 1</td>
+<td>56.51</td>
+<td>55.96 (−0.55)</td>
+<td>10.13 ms</td>
+<td>9.28 ms (1.09×)</td>
+<td>10.18 ms</td>
+<td>9.14 ms (1.11×)</td>
+<td>70 MB</td>
+<td>83 MB</td>
+</tr>
+<tr>
+<td>Nano, 8</td>
+<td>47.98</td>
+<td>47.23 (−0.75)</td>
+<td>2.72 ms</td>
+<td>2.16 ms (1.26×)</td>
+<td>2.72 ms</td>
+<td>2.13 ms (1.28×)</td>
+<td>70 MB</td>
+<td>120 MB</td>
+</tr>
+<tr>
+<td>Nano, 32</td>
+<td>48.02</td>
+<td>47.28 (−0.75)</td>
+<td>2.98 ms</td>
+<td>2.33 ms (1.28×)</td>
+<td>2.97 ms</td>
+<td>2.31 ms (1.28×)</td>
+<td>113 MB</td>
+<td>366 MB</td>
+</tr>
+</tbody>
+</table>
+<p>The larger models gain less: their global attention, which stays FP16, is a bigger share of the work, and Large keeps its windowed attention in FP16 as well (see below).</p>
+<p>These tables come from a benchmark harness outside this repository. <a href="../../cookbooks/export-cuda/#8-tensorrt-int8">Section 8 of the CUDA cookbook</a> runs the same kind of calibration (128 COCO images, there <code>val2017</code> images held out of the scored subset), export and FP16-against-INT8 comparison for Small at batch 1 on a <code>val2017</code> subset, from a synchronous call and a CUDA graph, so you can measure it on your own GPU; it does not regenerate these tables.</p>
+<div class="admonition warning">
+<p class="admonition-title">Engine size on the T4</p>
+<p>On the T4 the INT8 engine is larger than the FP16 one for Large at batch 1 (83 against 70 MB) and for Nano at batch 4, 8 and 32 (79, 120 and 366 MB against 65, 70 and 113 MB), where the RTX 5070 shows the opposite. The cause has not been diagnosed. What TensorRT's engine inspector shows on the T4: the layers' constants are the same at every batch (29 MB for INT8, 51 MB for FP16 on Nano), so it is not the weights; the bytes outside them grow by 10.3 MB per image of batch for INT8 against 1.5 MB for FP16, and by about 31 MB more than FP16 on Large at batch 1, so the cost follows the image size; and it does not change with INT8 attention switched off or with <code>builder_optimization_level=1</code>. Speed and accuracy are unaffected, but check the file size if disk or load time matters.</p>
+</div>
+<p>The INT8 weights take 32 MB against FP16's 54 MB on Nano. On the RTX 5070 both engines also store a block of zeros: TensorRT pads the 3-channel image of the FP16 patch embedding to 4 or 8 channels, picked per build, and keeps the added channels as a constant of 0.3 or 1.5 MB per image of batch. Two builds of the same graph can therefore differ by up to 1.2 MB per image, which is why the batch-32 sizes are ranges.</p>
+<p>The INT8 placement follows what was measured, not "quantize every matrix multiply":</p>
+<ul>
+<li><strong>INT8:</strong> every backbone MLP, the windowed backbone blocks' attention with its projections (up to 325 tokens; see below), and the decoder's cross-attention, feed-forward and reference-point layers. Q/DQ pairs carry FP16 scales on the FP16 graph, so every layer left unquantized stays FP16.</li>
+<li><strong>FP16:</strong> the projector, the two-stage proposal head and the detection heads (quantizing them cost accuracy and bought nothing), plus the attention blocks below.</li>
+<li><strong>The patch embedding stays FP16.</strong> TensorRT ran it in INT8 on the image padded to 32 channels and stored the 29 added zero channels in the engine, a constant the size of the batch. On Nano that made the engine 110 MB at batch 8 and 315 MB at batch 32, and INT8 1.21× instead of 1.37× faster than FP16 at batch 8. Every convolution whose input channels are not a multiple of 32 stays FP16.</li>
+<li><strong>Attention is all INT8 or all FP16.</strong> A block with head size 16, 32 or 64 and at most 325 tokens gets INT8 projections and INT8 attention matrix multiplies, which TensorRT fuses into one INT8 attention kernel: the windowed backbone blocks of Nano (145 tokens), Small (257) and Medium (325). 325 is the largest window measured to pay (Medium: 5% faster from a CUDA graph, about equal with a plain call, −0.28 AP); on Large's 485-token windows INT8 attention ran no faster and cost 1.0 AP, so Large keeps them FP16. Windows of 326 to 484 tokens are not measured and stay FP16. The global blocks (580 tokens on Nano) and the decoder self-attention keep projections and attention in FP16 too. A windowed block has <code>(resolution / patch_size / num_windows)² + 1</code> tokens, so a higher export resolution can move a model's attention to FP16; the export logs how many backbone attention blocks stay FP16.</li>
+</ul>
+<p>Requirements and limits:</p>
+<ul>
+<li>Detection models only. Segmentation and keypoint models raise <code>NotImplementedError</code>; export them with <code>quantization=None</code>.</li>
+<li>A static batch (<code>dynamic_batch=True</code> is refused), <code>fp16=True</code>, and TensorRT 10 or newer. Only TensorRT 10.16 and 11.3 were measured; the 10.x releases before 10.16 are accepted but untested.</li>
+<li>On the RTX 5070 under WSL2, at batch 1 the engine is launch-bound: the gain needs a CUDA-graph replay, and without one INT8 gains only 1.05–1.11× (the plain-call column above). The T4 gains about as much without a graph (1.09–1.22×).</li>
+<li>Measured on two GPUs (sm_120 and sm_75), without <code>trt_hardware_compatibility</code>, <code>trt_version_compatible</code> or a shared <code>trt_timing_cache</code>: those settings are accepted with <code>quantization="int8"</code>, but INT8 engines built with them were not measured, and a portable engine may not get the fused INT8 attention kernel the gain relies on. The attention placement relies on TensorRT's INT8 fused-attention kernel, which NVIDIA lists for sm_75 to sm_90, sm_120 and sm_121; on other GPUs (for example sm_100, B200) INT8 attention would run unfused, so measure on your GPU before deploying.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Who consumes the <code>.trt</code> engine?</p>
+<p>The <code>.trt</code> engine produced by <code>format="tensorrt"</code> is a standalone artifact for raw TensorRT deployment. By default it is locked to the GPU architecture and TensorRT version of the machine that built it, so it is not portable across different GPUs or TensorRT releases; see <a href="#portable-engines">Portable Engines</a> for the options that widen that.</p>
+<p>If you plan to run inference with <a href="../basics/#run-inference-with-inference-models"><code>inference-models</code></a> (the recommended path), do <strong>not</strong> pass <code>format="tensorrt"</code> — <code>inference-models</code> builds and manages its own TensorRT engine internally and does not consume this file. Export a plain ONNX model instead and let <code>inference-models</code> handle the backend.</p>
+</div>
+<h2 id="engine-description-file">Engine Description File<a class="headerlink" href="#engine-description-file" title="Permanent link">&para;</a></h2>
+<p>A <code>.trt</code> file has no slot for user metadata, so a consumer that does not import the model, such as a C++ service, <a href="https://developer.nvidia.com/triton-inference-server">Triton</a> or <a href="https://developer.nvidia.com/deepstream-sdk">DeepStream</a>, cannot learn what the engine expects from the file itself. Pass <code>trt_metadata=True</code> to write <code>&lt;engine&gt;.json</code> next to it, with the same name and a <code>.json</code> suffix:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">engine</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"tensorrt"</span><span class="p">,</span> <span class="n">trt_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># engine -&gt; output/rfdetr-medium_fp16.trt, described by output/rfdetr-medium_fp16.json</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">".json"</span><span class="p">))</span> <span class="k">as</span> <span class="n">description_file</span><span class="p">:</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">description</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">description_file</span><span class="p">)</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="n">engine_bytes</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">()</span>  <span class="c1"># deserialize these bytes, not a second read of the file</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="k">if</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">engine_bytes</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">!=</span> <span class="n">description</span><span class="p">[</span><span class="s2">"engine"</span><span class="p">][</span><span class="s2">"sha256"</span><span class="p">]:</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">engine</span><span class="si">}</span><span class="s2"> is not the engine this description was written for"</span><span class="p">)</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">description</span><span class="p">[</span><span class="s2">"input"</span><span class="p">][</span><span class="s2">"height"</span><span class="p">],</span> <span class="n">description</span><span class="p">[</span><span class="s2">"input"</span><span class="p">][</span><span class="s2">"width"</span><span class="p">]</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>schema_version</code></td>
+<td>Version of this layout, <code>1</code>. It changes when a key is removed, renamed or changes meaning. Adding a key does not change it, so a reader ignores the keys it does not know.</td>
+</tr>
+<tr>
+<td><code>rfdetr_version</code></td>
+<td>The <code>rfdetr</code> version that exported the engine, or <code>null</code> when run from a source tree that is not installed.</td>
+</tr>
+<tr>
+<td><code>variant</code></td>
+<td>The model variant name, such as <code>rfdetr-nano</code>, or <code>null</code> when there is none.</td>
+</tr>
+<tr>
+<td><code>backbone_only</code></td>
+<td>Whether the engine is a backbone-only export, whose outputs are feature maps.</td>
+</tr>
+<tr>
+<td><code>engine</code></td>
+<td>The engine file this description file was written for: its <code>size</code> in bytes and <code>sha256</code>, the SHA-256 hex digest of its bytes. Compare them with the <code>.trt</code> you load, as in the example above.</td>
+</tr>
+<tr>
+<td><code>input</code></td>
+<td>The input tensor: <code>name</code>, <code>layout</code> (<code>NCHW</code>), <code>dtype</code>, <code>height</code>, <code>width</code>, <code>channels</code>, <code>channel_order</code> (<code>"RGB"</code> for three channels, otherwise <code>null</code>), <code>normalization</code> and <code>resize</code>. Pixel values are divided by <code>normalization.scale</code>, then <code>(x - mean) / std</code> is applied per channel; <code>resize</code> is bilinear with half-pixel centers and no antialiasing, and its <code>aspect_ratio</code> is <code>"stretch"</code>: the whole image is resized to <code>height</code> x <code>width</code>, with no letterbox and no padding, so the boxes are normalized to the image and scale by its original width and height.</td>
+</tr>
+<tr>
+<td><code>outputs</code></td>
+<td>The output tensors in the order the engine returns them, each with <code>name</code> and <code>dtype</code>.</td>
+</tr>
+<tr>
+<td><code>batch</code></td>
+<td><code>{"dynamic": false, "size": N}</code> for a static engine, or <code>{"dynamic": true, "min": 1, "opt": N, "max": M}</code> for one built with <code>dynamic_batch=True</code>.</td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td>How the engine was built: <code>precision</code> (the one actually built, which can differ from <code>fp16</code> on a lean TensorRT wheel, and is <code>int8</code> for a <code>quantization="int8"</code> engine; on TensorRT before 11 it records that the FP16 builder flag was set, so FP16 is allowed but not forced, while on TensorRT 11 and later it records an fp16 cast graph, so read <code>tensorrt_version</code> to tell which applies), <code>opset</code>, <code>tensorrt_version</code> and <code>gpu</code> (<code>name</code> and <code>compute_capability</code>, or <code>null</code> when PyTorch has no CUDA).</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>The <code>notes</code> passed to <code>export()</code>: a string as it is, any other value JSON-encoded into a string (decode it once more), or <code>null</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>All inputs and outputs are <code>float32</code>, also for an <code>fp16</code> engine. The normalization values are the ones <code>RFDETR.predict()</code> applies. The <code>resize</code> block records the convention of the export runtime and of <code>RFDETR.predict()</code> by default; a checkpoint trained with an antialiased resize may expect <code>antialias=True</code>, which is the <code>antialias</code> argument of <code>RFDETR.predict()</code>, and the file does not record that.</p>
+<div class="admonition note">
+<p class="admonition-title">What the file does not say</p>
+<p>It does not record class names or which logit slot is the background class. How a slot maps to a class depends on the checkpoint (official COCO weights use sparse COCO category ids, fine-tuned models use contiguous ids), and <code>RFDETR.predict()</code> decides it internally. For <code>dets</code> and <code>labels</code> outputs, <code>dets</code> holds normalized <code>cx, cy, w, h</code> boxes and <code>labels</code> holds raw class logits, which <code>RFDETR.predict()</code> turns into scores with a per-class sigmoid (not a softmax) before it keeps the highest-scoring (query, class) pairs above the confidence threshold; see <a href="https://github.com/roboflow/rf-detr/blob/develop/src/rfdetr/export/_runtime/decode.py"><code>decode_detections</code></a> for how the repository turns them into detections.</p>
+</div>
+<p>The file is written after the engine and replaces an older description of the same name in one step, so a reader never sees half a file; if a <code>.json</code> of that name that an RF-DETR export did not write is already there, <code>export()</code> raises <code>FileExistsError</code> before building the engine, and you rename or remove that file or pick another <code>output_name</code>. On Linux and macOS it gets the engine's permission bits and, where you are allowed to set it, the engine's group, so a service that can read the engine can read the description too. Only <code>RFDETR.export</code> (or calling the exporter on a prepared graph) writes it; <code>TensorRTExporter.build_engine</code> on an <code>.onnx</code> file has no graph to describe and does not, and with <code>TensorRTConfig(metadata=True)</code> it warns that the setting has no effect there. If the file can't be written, <code>export()</code> raises <code>OSError</code> after the engine is built, and the message says so.</p>
+<p>The engine and its description file are still two files, replaced one after the other. A program that reads them while an export is running, or after two exports of the same name ran at the same time, can find an engine next to the description file of another build. That is what <code>engine</code> is for: compare its <code>sha256</code> with the bytes you load, as the example above does, before you trust the rest.</p>
+<p>The engine's file name doesn't include its batch profile or input size, so a later export of the same model overwrites the engine and can leave an old <code>.json</code> next to it. When a build doesn't write a description file (<code>export()</code> without <code>trt_metadata=True</code>, or <code>build_engine</code>) and one with the engine's name is already there, you get a warning that it may no longer match. The warning repeats on every rebuild of that engine name for as long as the old description file stays in place. The file is never deleted, because this build didn't write it; a program that checks its <code>engine.sha256</code> finds out whether it still matches.</p>
+<h2 id="portable-engines">Portable Engines<a class="headerlink" href="#portable-engines" title="Permanent link">&para;</a></h2>
+<p>By default an engine only runs on the kind of GPU and the TensorRT version that built it. Two options ask TensorRT for more portable engines. Both are off by default, and the default build doesn't change. An engine built with either option gets its own file name, like <code>&lt;variant&gt;_fp16_ampere_plus.trt</code>, so it doesn't overwrite a default engine in the same folder (unless you set <code>output_name</code>, which is used as is).</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Ask for an engine that NVIDIA Ampere GPUs (compute capability 8.x) and newer can run.</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">model</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"tensorrt"</span><span class="p">,</span> <span class="n">trt_hardware_compatibility</span><span class="o">=</span><span class="s2">"ampere_plus"</span><span class="p">)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Ask for an engine that other releases of the same TensorRT major version may load.</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">model</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"tensorrt"</span><span class="p">,</span> <span class="n">trt_version_compatible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>trt_hardware_compatibility</code> is <code>"ampere_plus"</code> or <code>"same_compute_capability"</code>. The first targets Ampere and every newer GPU, and has to be built on one of them; the second targets GPUs with the same compute capability as the one you build on. TensorRT records the level in the engine. We only had one GPU, so we haven't tested running such an engine on a second one. NVIDIA doesn't support hardware compatibility on Jetson (JetPack) or DriveOS (<a href="https://docs.nvidia.com/deeplearning/tensorrt/latest/inference-library/engine-compatibility.html">engine compatibility</a>). If your TensorRT doesn't have the level, you get a <code>ValueError</code> before the export runs the model.</p>
+<p><code>trt_version_compatible=True</code> asks for an engine that other releases of the same TensorRT major version may load. It worked between TensorRT 11.2 and 11.3, in both directions. It didn't work across major versions (10 and 11), or between TensorRT 10.13 and 10.16, so test your pair of releases before you rely on it. The build needs TensorRT's lean runtime, which is a separate package: install the lean wheel that matches your <code>tensorrt</code> wheel, for example <a href="https://pypi.org/project/tensorrt-lean-cu13-libs/"><code>tensorrt-lean-cu13-libs</code></a> next to <a href="https://pypi.org/project/tensorrt-cu13-libs/"><code>tensorrt-cu13-libs</code></a> (the version may differ by a <code>.post</code> suffix), or use the library from the TensorRT archive or system package. Without it the export raises <code>ImportError</code> naming the library, before it runs the model.</p>
+<p>The options have a cost, so measure on your own model. In our FP16 tests, <code>ampere_plus</code> made the build about 3.5 times slower, the engine about 60% larger and inference about 10% slower. <code>same_compute_capability</code> cost nothing we could measure. <code>trt_version_compatible</code> added about 105 MB to an <code>RFDETRNano</code> engine on TensorRT 11 (on TensorRT 10.16 the engine was the size of a default one). The <a href="https://github.com/roboflow/rf-detr/blob/main/CHANGELOG.md">changelog</a> has the numbers.</p>
+<p>An engine built by TensorRT 11 with <code>trt_version_compatible=True</code> contains host code, and TensorRT only loads it if you say you trust the file. <code>TRTInference</code> and <code>rfdetr.export.benchmark</code> take <code>engine_host_code_allowed</code> for that; it's off by default:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rfdetr.export._tensorrt.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">TRTInference</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">engine</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"tensorrt"</span><span class="p">,</span> <span class="n">trt_version_compatible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">runtime</span> <span class="o">=</span> <span class="n">TRTInference</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">engine</span><span class="p">),</span> <span class="n">sync_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine_host_code_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Only turn it on for a file you built yourself or otherwise trust. <code>TRTInference</code> lives in a private module, so like the classes under <a href="#python-api-conversion">Python API Conversion</a> it can change without notice; <code>sync_mode=True</code> avoids the <a href="https://pypi.org/project/pycuda/"><code>pycuda</code></a> dependency of its default mode.</p>
+<h2 id="reuse-the-timing-cache">Reuse the Timing Cache<a class="headerlink" href="#reuse-the-timing-cache" title="Permanent link">&para;</a></h2>
+<p>A large share of an engine build goes into timing candidate kernels for each layer. TensorRT can save those timings in a cache file, and a later build that uses the file skips the timing it already did. Pass <code>trt_timing_cache</code> to keep one across exports:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">model</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"tensorrt"</span><span class="p">,</span> <span class="n">trt_timing_cache</span><span class="o">=</span><span class="s2">"output/rfdetr.cache"</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The first export creates the file (and its folder). Later exports load it and write the merged timings back. It pays off when you rebuild the same model at the same precision and batch profile, on the same GPU and TensorRT version, for example after fine-tuning: the timings depend on the layers' shapes, not on the weights. In our tests, a cache from the pretrained model saved about as much time for a model fine-tuned to 3 classes, whose class head has a different shape. A different resolution changes every layer's shape, and we haven't measured it. A cache from a matching dynamic-batch build (batch 1-8) helps too: it cut the build time by 74-76% in fp16 and 42-43% in fp32. We did not measure reusing a cache between a static and a dynamic batch profile, or across precisions.</p>
+<p>A cache TensorRT can't use doesn't stop the export. For a file written by another TensorRT major version, or an empty or corrupt one, TensorRT logs a serialization error, builds as if there were no cache, and the file is replaced with the new timings. A timing cache is specific to the GPU, the CUDA version and the TensorRT version, so keep one cache file per GPU and per software stack. TensorRT's API reference says a cache whose recorded CUDA device properties differ from the current environment is reported as a failure; we had one GPU and could not test that. We tested TensorRT 10.16 and 11.3 with Polygraphy 0.53.4, while the supported range is <code>tensorrt&gt;=8.6.1</code> and the Polygraphy version is not pinned, so behavior on other versions is untested.</p>
+<p>A cache that can't be written does stop the export, though: Polygraphy writes the timing cache before it returns the engine, so if that write fails (a full disk, say) the export raises and the built engine is not saved. Fix the cause and export again; the engine can simply be rebuilt.</p>
+<p>A bad path is refused before the engine is built: a directory, or a path ending in a separator, raises <code>ValueError</code>, and a location that can't be created or written raises <code>OSError</code>. <code>~</code> is expanded, and a relative path is relative to the working directory, not to <code>output_dir</code>.</p>
+<p>Polygraphy keeps an empty <code>&lt;file&gt;.lock</code> next to the cache and locks it while it reads or writes the cache, so the folder has to be writable. We did not test two exports sharing one cache file at the same time. Without <code>trt_timing_cache</code>, no file is read or written.</p>
+<h2 id="python-api-conversion">Python API Conversion<a class="headerlink" href="#python-api-conversion" title="Permanent link">&para;</a></h2>
+<p>Use this only to convert an <strong>already-exported</strong> <code>.onnx</code> file without re-running the model export. To go straight from a checkpoint to an engine, use <a href="#export-directly-to-tensorrt"><code>format="tensorrt"</code></a> above.</p>
+<div class="admonition warning">
+<p class="admonition-title">Internal API</p>
+<p><code>rfdetr.export._tensorrt.exporter</code> is a private module — the leading underscore means it carries no stability guarantee and may move or change signature in any release. <code>RFDETR.export(format="tensorrt")</code> is the supported entry point; use the class below only when you need to convert an already-exported <code>.onnx</code> file.</p>
+</div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rfdetr.export._tensorrt.exporter</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorRTConfig</span><span class="p">,</span> <span class="n">TensorRTExporter</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">exporter</span> <span class="o">=</span> <span class="n">TensorRTExporter</span><span class="p">(</span><span class="n">TensorRTConfig</span><span class="p">(</span><span class="n">fp16</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">engine_path</span> <span class="o">=</span> <span class="n">exporter</span><span class="o">.</span><span class="n">build_engine</span><span class="p">(</span><span class="s2">"output/inference_model.onnx"</span><span class="p">)</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># -&gt; "output/inference_model_fp16.trt"</span>
+</span></code></pre></div>
+<p><code>TensorRTExporter.build_engine</code> builds the engine in-process via the TensorRT Python API (no <code>trtexec</code> subprocess) and returns the path to the generated <code>.trt</code> engine file. Precision and progress logging come from the <code>TensorRTConfig</code> the exporter is constructed with — pass <code>TensorRTConfig(output_name="my-engine")</code> to write <code>output/my-engine.trt</code> verbatim instead. <code>TensorRTConfig(timing_cache="output/rfdetr.cache")</code> reuses a timing cache here too; see <a href="#reuse-the-timing-cache">Reuse the Timing Cache</a>.</p>
+<p>An <code>.onnx</code> file exported with <code>dynamic_batch=True</code> needs <code>dynamic_batch=True</code> here as well, plus <code>max_batch_size</code>, the largest batch the engine accepts. <code>opt_batch_size</code> (default <code>1</code>) is the batch its kernels are tuned for. Without <code>dynamic_batch=True</code>, <code>build_engine</code> raises <code>ValueError</code> rather than building an engine that accepts batch 1 only.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">exporter</span> <span class="o">=</span> <span class="n">TensorRTExporter</span><span class="p">(</span><span class="n">TensorRTConfig</span><span class="p">(</span><span class="n">fp16</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dynamic_batch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">opt_batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">engine_path</span> <span class="o">=</span> <span class="n">exporter</span><span class="o">.</span><span class="n">build_engine</span><span class="p">(</span><span class="s2">"output/inference_model.onnx"</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The portability options work here too, as <code>TensorRTConfig(hardware_compatibility="ampere_plus")</code> and <code>TensorRTConfig(version_compatible=True)</code>; see <a href="#portable-engines">Portable Engines</a>.</p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="October 8, 2026 17:02:29 UTC">2026-10-08 17:02:29</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Roboflow 2025–2026. All rights reserved.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/roboflow" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.youtube.com/roboflow" target="_blank" rel="noopener" title="www.youtube.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M549.7 124.1c-6.2-23.7-24.8-42.3-48.3-48.6C458.9 64 288.1 64 288.1 64S117.3 64 74.7 75.5c-23.5 6.3-42 24.9-48.3 48.6C15 167 15 256.4 15 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8C117.3 448 288.1 448 288.1 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6V175.2l142.7 81.2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/company/roboflow-ai/mycompany/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/roboflow" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M459.4 151.7c.3 4.5.3 9.1.3 13.6 0 138.7-105.6 298.6-298.6 298.6-59.5 0-114.7-17.2-161.1-47.1 8.4 1 16.6 1.3 25.3 1.3 49.1 0 94.2-16.6 130.3-44.8-46.1-1-84.8-31.2-98.1-72.8 6.5 1 13 1.6 19.8 1.6 9.4 0 18.8-1.3 27.6-3.6-48.1-9.7-84.1-52-84.1-103v-1.3c14 7.8 30.2 12.7 47.4 13.3-28.3-18.8-46.8-51-46.8-87.4 0-19.5 5.2-37.4 14.3-53C87.4 130.8 165 172.4 252.1 176.9c-1.6-7.8-2.6-15.9-2.6-24C249.5 95.1 296.3 48 354.4 48c30.2 0 57.5 12.7 76.7 33.1 23.7-4.5 46.5-13.3 66.6-25.3-7.8 24.4-24.4 44.8-46.1 57.8 21.1-2.3 41.6-8.1 60.4-16.2-14.3 20.8-32.2 39.3-52.6 54.3"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.tabs.link", "content.code.copy", "navigation.expand", "navigation.tabs", "content.code.annotate", "navigation.tracking", "content.tooltips", "navigation.tabs.sticky"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/version-banner.js"></script>
+      
+    
+  </body>
+</html>
